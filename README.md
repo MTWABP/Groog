@@ -6,3 +6,5 @@ Objectives:
 * Ability to send messages
 * Assign tasks
 * Organize meetups
+
+//Ignore this is just a test
