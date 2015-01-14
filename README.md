@@ -7,4 +7,3 @@ Objectives:
 * Assign tasks
 * Organize meetups
 
-//Ignore this is just a test
