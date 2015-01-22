@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'math/:num1/:operation/:num2' => 'math#operation'
+
   get 'david/hello'
   get 'david/goodbye'
 
