@@ -1,4 +1,4 @@
-# MJT
+# Groog
 Make the world a better place through providing easy to use services to managing groups of people.
 
 Objectives:
