@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
 
   get 'david/hello'
-
   get 'david/goodbye'
 
-  get 'say/hello'
-
-  get 'say/goodbye'
+  get 'saying/hello'
+  get 'saying/professor'
 
   get 'chat/box'
 
