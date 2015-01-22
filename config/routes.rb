@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+<<<<<<< HEAD
 
   get 'david/hello'
 
@@ -8,6 +9,10 @@ Rails.application.routes.draw do
 
   get 'say/goodbye'
 
+=======
+  get 'saying/hello'
+  get 'saying/professor'
+>>>>>>> b68cec33f28bf893a32c7501cb8d1840b33cba0f
   get 'chat/box'
 
   # The priority is based upon order of creation: first created -> highest priority.
