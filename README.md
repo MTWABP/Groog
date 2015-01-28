@@ -1,9 +1,3 @@
-# Groog
-Make the world a better place through providing easy to use services to managing groups of people.
+#Training
 
-Objectives:
-* Create a group, users are required to provide emails
-* Ability to send messages
-* Assign tasks
-* Organize meetups
-
+This is the pinteresting sample application.
