@@ -16,14 +16,24 @@
       <%= f.label :password %>
       <%= f.password_field :password, class: 'form-control' %>
     </div>
-    <%= f.submit 'Sign in', :class => 'button right' %>
-    <% if devise_mapping.rememberable? -%>
-      <div class="checkbox" style="width:150px">
-        <label>
-          <%= f.check_box :remember_me %> Remember me
-        </label>
-      </div>
-    <% end -%>
-    <%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
+    <div class="form-group">
+      <%= f.submit 'Sign in', :class => 'button right' %>
+      <% if devise_mapping.rememberable? -%>
+        <div class="checkbox" style="width:150px">
+          <label>
+            <%= f.check_box :remember_me %> Remember me
+          </label>
+        </div>
+      <% end -%>
+      <br />
+    </div>
+    <div class="form-group">
+      <%= link_to user_omniauth_authorize_path(:google_oauth2) do %>
+        <div id="customGPlusSignIn">
+          <span class="icon"></span>
+          <span class="buttonText">Sign in with Google</span>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 </div>

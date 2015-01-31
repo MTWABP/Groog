@@ -3,8 +3,12 @@
     <h3>Sign up</h3>
     <%= devise_error_messages! %>
     <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, :autofocus => true, class: 'form-control' %>
+    </div>
+    <div class="form-group">
       <%= f.label :email %>
-      <%= f.email_field :email, :autofocus => true, class: 'form-control' %>
+      <%= f.email_field :email, class: 'form-control' %>
     </div>
     <div class="form-group">
       <%= f.label :password %>
@@ -14,6 +18,18 @@
       <%= f.label :password_confirmation %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
     </div>
-     <%= f.submit 'Sign up', :class => 'button right' %>
+    <div class="form-group">
+      <%= f.submit 'Sign up', :class => 'button right' %>
+      <br />
+      <br />
+    </div>
+    <div class="form-group">
+      <%= link_to user_omniauth_authorize_path(:google_oauth2) do %>
+        <div id="customGPlusSignIn">
+          <span class="icon"></span>
+          <span class="buttonText">Sign up with Google</span>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 </div>
