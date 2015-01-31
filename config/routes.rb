@@ -6,5 +6,5 @@ Rails.application.routes.draw do
   mount Upmin::Engine => '/admin'
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   
-  resources :groups
+  resources :groups, id: :slug
 end

@@ -1,8 +1,7 @@
-<%= simple_form_for(@group) do |f| %>
+<%= simple_form_for(@group, {url: @group.id.nil? ? groups_path : group_path(@group.slug)}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :slug %>
     <%= f.input :name %>
     <%= f.input :description %>
   </div>

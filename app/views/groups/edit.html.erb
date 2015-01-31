@@ -1,6 +1,8 @@
-<h1>Editing Group</h1>
+<div class="authform">
+  <h1>Editing <% @group %></h1>
 
-<%= render 'form' %>
+  <%= render 'form' %>
 
-<%= link_to 'Show', @group %> |
-<%= link_to 'Back', groups_path %>
+  <%= link_to 'Show', group_path(@group.slug) %> |
+  <%= link_to 'Back', groups_path %>
+</div>

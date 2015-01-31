@@ -1,10 +1,11 @@
 class GroupsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_group, only: [:show, :edit, :update, :destroy]
 
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.all
+    @groups = current_user.groups.active
   end
 
   # GET /groups/1
@@ -28,6 +29,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
+        GroupMembership.create(user: current_user, group: @group, active: true)
         format.html { redirect_to @group, notice: 'Group was successfully created.' }
         format.json { render :show, status: :created, location: @group }
       else
@@ -64,7 +66,7 @@ class GroupsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_group
-      @group = Group.find(params[:id])
+      @group = Group.find_by(slug: params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

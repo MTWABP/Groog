@@ -1,5 +1,11 @@
 class User < ActiveRecord::Base
-  has_many :groups, through: :group_memberships
+  has_many :group_memberships
+  has_many :groups, through: :group_memberships do
+    def active
+      where("group_memberships.active = ?", true)
+    end
+  end
+
   enum role: [:user, :vip, :admin]
   after_initialize :set_default_role, :if => :new_record?
 
@@ -28,5 +34,9 @@ class User < ActiveRecord::Base
         user.email = data["email"] if user.email.blank?
       end
     end
+  end
+
+  def to_s
+    name
   end
 end

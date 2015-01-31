@@ -1,19 +1,16 @@
-<p id="notice"><%= notice %></p>
+<div class="jumbotron center">
+  <h1><%= @group %></h1>
 
-<p>
-  <strong>Slug:</strong>
-  <%= @group.slug %>
-</p>
+  <p>
+    <strong>URL:</strong>
+    <%= @group.url %>
+  </p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @group.name %>
-</p>
+  <p>
+    <strong>Description:</strong>
+    <%= @group.description %>
+  </p>
 
-<p>
-  <strong>Description:</strong>
-  <%= @group.description %>
-</p>
-
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+  <%= link_to 'Edit', edit_group_path(@group.slug) %> |
+  <%= link_to 'Back', groups_path %>
+</div>
