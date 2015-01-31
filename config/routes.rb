@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
+  mount Upmin::Engine => '/admin'
   devise_for :users
-  root "pages#home"
-  get "about" =>"pages#about"
+  root to: 'home#index'
 end
