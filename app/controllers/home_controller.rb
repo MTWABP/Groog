@@ -7,7 +7,9 @@ class HomeController < ApplicationController
   def ghpull
     # TODO: make tests and run them...lets be real, I'll never do this.
     # email me so I can make sure it works manually
-    if `whoami` == "root\n"
+    who = `whoami`.strip
+    p who
+    if who == 'root' || who == 'groog'
       `cd /home/groog/domains/groog.me/Groog`
       `git stash`
       `git pull`
