@@ -8,13 +8,13 @@ class HomeController < ApplicationController
     # TODO: make tests and run them...lets be real, I'll never do this.
     # email me so I can make sure it works manually
     who = `whoami`.strip
-    p who
     if who == 'root' || who == 'groog'
       `cd /home/groog/domains/groog.me/Groog`
       `git stash`
       `git pull`
       `bundle`
       `touch tmp/restart.txt`
+      logger.info "Server updated and restarted"
     end
     render status: 200, json: {success: true}
   end
