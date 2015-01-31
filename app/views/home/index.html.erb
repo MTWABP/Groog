@@ -1,7 +1,7 @@
 <div class="jumbotron center">
 <h1>Lets Groog up!</h1>
 <% if user_signed_in? %>
-  # do something
+  <%= link_to "Create a new group!", new_group_path, class: "btn btn-primary btn-lg" %>
 <% else %>
   <%= link_to "Log in", new_user_session_path, class: "btn btn-default btn-lg" %>
   <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-lg" %>
