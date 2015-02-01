@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
     def active
       where("group_memberships.active = ?", true)
     end
+    def inactive
+      where("group_memberships.active = ?", false)
+    end
   end
 
   enum role: [:user, :vip, :admin]

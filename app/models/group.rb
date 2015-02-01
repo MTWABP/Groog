@@ -1,6 +1,9 @@
 class Group < ActiveRecord::Base
   has_many :group_memberships
   has_many :users, through: :group_memberships do
+    def active
+      where("group_memberships.active = ?", true)
+    end
     def inactive
       where("group_memberships.active = ?", false)
     end

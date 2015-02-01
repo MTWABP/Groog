@@ -1,0 +1,6 @@
+<div class="jumbotron center">
+  <h1><%= @group %> <span class="h4"><%= link_to @group.url, @group.url %></span></h1>
+  <p><%= @group.description %></p>
+  <%= link_to 'Join Group', join_group_path(@group.slug), method: :post, class: "btn btn-lg btn-primary" %>
+  <%= link_to 'My Groups', groups_path, class: "btn btn-lg btn-default" %>
+</div>

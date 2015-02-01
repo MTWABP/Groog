@@ -1,36 +1,42 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :create_membership]
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_active
 
   # GET /groups
   # GET /groups.json
   def index
-    @groups = current_user.groups.active
+    @groups = policy_scope(Group)
+    @inactive = current_user.groups.inactive
   end
 
   # GET /groups/1
   # GET /groups/1.json
   def show
+    authorize @group
   end
 
   # GET /groups/new
   def new
     @group = Group.new
+    authorize @group
   end
 
   # GET /groups/1/edit
   def edit
+    authorize @group
   end
 
   # POST /groups
   # POST /groups.json
   def create
     @group = Group.new(group_params)
+    authorize @group
 
     respond_to do |format|
       if @group.save
         GroupMembership.create(user: current_user, group: @group, active: true)
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
+        format.html { redirect_to group_path(@group.slug), notice: 'Group was successfully created.' }
         format.json { render :show, status: :created, location: @group }
       else
         format.html { render :new }
@@ -42,9 +48,10 @@ class GroupsController < ApplicationController
   # PATCH/PUT /groups/1
   # PATCH/PUT /groups/1.json
   def update
+    authorize @group
     respond_to do |format|
       if @group.update(group_params)
-        format.html { redirect_to @group, notice: 'Group was successfully updated.' }
+        format.html { redirect_to group_path(@group.slug), notice: 'Group was successfully updated.' }
         format.json { render :show, status: :ok, location: @group }
       else
         format.html { render :edit }
@@ -55,22 +62,53 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1
   # DELETE /groups/1.json
-  def destroy
-    @group.destroy
-    respond_to do |format|
-      format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
-      format.json { head :no_content }
+  # def destroy
+  #   @group.destroy
+  #   respond_to do |format|
+  #     format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
+  #     format.json { head :no_content }
+  #   end
+  # end
+
+  # GET /groups/1/join
+  # GET /groups/1/join.json
+  def join
+    authorize @group
+    membership = GroupMembership.find_by(user: current_user, group: @group)
+    if membership.nil?
+      
+    elsif membership.active
+      redirect_to group_path(@group.slug), notice: "You are already part of this team!"
+    else
+      redirect_to groups_path, notice: "Your membership is already pending for this group."
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_group
-      @group = Group.find_by(slug: params[:id])
+  # POST /groups/1/join
+  # POST /groups/1/join.json
+  def create_membership
+    authorize @group
+    membership = GroupMembership.find_by(user: current_user, group: @group)
+    if membership.nil?
+      GroupMembership.create(user: current_user, group: @group, active: false)
+    elsif membership.active
+      redirect_to group_path(@group.slug), notice: "You are already part of this team!"
     end
+    redirect_to groups_path, notice: "This group has been notified of your request. Please wait to be activated."
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def group_params
-      params.require(:group).permit(:slug, :name, :description)
-    end
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_group
+    @group = Group.find_by_slug(params[:slug])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def group_params
+    params.require(:group).permit(:name, :description)
+  end
+
+  def user_not_active
+    redirect_to join_group_path(@group.slug), notice: "You must request to join this group."
+  end
 end
