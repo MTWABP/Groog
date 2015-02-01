@@ -13,7 +13,10 @@ $jumbotron-bg: #bdc3c7;
 @import "bootstrap";
 
 .navbar-brand {
-  font-weight: bold;
+  img {
+    width: 100px;
+    margin-top: -5px;
+  }
 }
 h1, .h1, h2, .h2, h3, .h3 {
   margin-top: 0px;
