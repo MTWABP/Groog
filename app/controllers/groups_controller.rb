@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :create_membership]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :create_membership, :activate_membership]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_active
 
   # GET /groups
@@ -95,6 +95,17 @@ class GroupsController < ApplicationController
       redirect_to group_path(@group.slug), notice: "You are already part of this team!"
     end
     redirect_to groups_path, notice: "This group has been notified of your request. Please wait to be activated."
+  end
+
+  # POST /groups/1/join/1
+  # POST /groups/1/join/1.json
+  def activate_membership
+    authorize @group
+    user = User.find(params[:user_id])
+    membership = GroupMembership.find_by(user: user, group: @group)
+    membership.active = true
+    membership.save
+    redirect_to group_path(@group.slug), notice: "#{user} has been activated."
   end
 
   private

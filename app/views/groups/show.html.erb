@@ -1,16 +1,77 @@
-<div class="jumbotron center">
-  <h1><%= @group %></h1>
+<div class="container-fluid">
+  <div class="row">
+    
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Group Info</div>
+        <div class="panel-body">
+          <h4><%= @group %> <span class="h5"><%= link_to @group.url, @group.url %></span></h4>
+          <p><%= @group.description %></p>
+        </div>
+      </div>
+    </div>
 
-  <p>
-    <strong>URL:</strong>
-    <%= @group.url %>
-  </p>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Members (<%= @group.users.active.count %>)</div>
+        <div class="panel-body">
+          <div class="list-group">
+          <% @group.users.active.each do |user|%>
+            <%= link_to user, user_path(user), class: "list-group-item" %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <p>
-    <strong>Description:</strong>
-    <%= @group.description %>
-  </p>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Chat</div>
+        <div class="panel-body">
 
-  <%= link_to 'Edit', edit_group_path(@group.slug) %> |
-  <%= link_to 'Back', groups_path %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Tasks</div>
+        <div class="panel-body">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Meetings</div>
+        <div class="panel-body">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Pending Members (<%= @group.users.inactive.count %>)</div>
+        <div class="panel-body">
+          <div class="list-group">
+          <% @group.users.inactive.each do |user|%>
+            <%= link_to user, activate_user_group_path(@group.slug, user), class: "list-group-item", method: :post %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Invite</div>
+        <div class="panel-body">
+
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

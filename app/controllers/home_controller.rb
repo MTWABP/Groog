@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:ghpull]
   def index
   end
-  
+
   def ghpull
     # TODO: make tests and run them...lets be real, I'll never do this.
     # email me so I can make sure it works manually
@@ -17,5 +17,9 @@ class HomeController < ApplicationController
       logger.info "Server updated and restarted"
     end
     render status: 200, json: {success: true}
+  end
+
+  def profile
+    redirect_to :back
   end
 end

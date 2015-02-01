@@ -34,6 +34,10 @@ class GroupPolicy
     true
   end
 
+  def activate_membership?
+    update?
+  end
+
   def scope
     Pundit.policy_scope!(user, group.class)
   end
