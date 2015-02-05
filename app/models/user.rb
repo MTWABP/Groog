@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :groups, as: :leader_of
   has_many :group_memberships
   has_many :groups, through: :group_memberships do
     def active
