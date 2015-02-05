@@ -1,4 +1,4 @@
-<%= simple_form_for @task, url: group_tasks_path(@group.slug, @task), :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for @task, url: (@task.persisted? ? group_task_path(@group.slug, @task) : group_tasks_path(@group.slug)), :html => { :class => 'form-horizontal', id: :task_form } do |f| %>
     <% if @task.errors.any? %>
         <div id="error_expl" class="panel panel-danger">
           <div class="panel-heading">
@@ -13,6 +13,7 @@
           </div>
         </div>
     <% end %>
+
 
     <div class="control-group">
       <%= f.label :task, :class => 'control-label' %>
@@ -42,4 +43,5 @@
   <%= f.button :submit, :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 group_tasks_path(@group.slug), :class => 'btn btn-default' %>
+
 <% end %>
