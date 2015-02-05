@@ -12,11 +12,11 @@
   <dd><%= @task.due_date %></dd>
 </dl>
 
-<%= link_to t('.back', :default => t("helpers.links.back")),
+<%= link_to "Back",
               group_tasks_path(@group.slug), :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
+<%= link_to "Edit",
               edit_group_task_path(@group.slug, @task.id), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+<%= link_to "Delete",
               group_task_path(@group.slug, @task.id),
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
