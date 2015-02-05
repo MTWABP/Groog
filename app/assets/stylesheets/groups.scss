@@ -1,0 +1,17 @@
+#group {
+  #group_tasks {
+    .list-group-item {
+      .avatar {
+        width: 28px;
+        float: left;
+        padding-right: 8px;
+      }
+      .subject {
+        font-weight: bold;
+      }
+      .due_date {
+        float: right;
+      }
+    }
+  }
+}

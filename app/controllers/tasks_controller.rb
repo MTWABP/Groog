@@ -1,12 +1,12 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :set_group
+  before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = @group.tasks
   end
 
   # GET /tasks/1
@@ -26,7 +26,7 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = @group.tasks.build(task_params)
     @task.owner_id = current_user.id
     @task.group_id = @group.id
 
@@ -68,7 +68,7 @@ class TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params[:id])
+      @task = @group.tasks.find(params[:id])
     end
 
     def set_group
@@ -77,6 +77,6 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:task, :description, :due_date)
+      params.require(:task).permit(:task, :description, :due_date, :assignee_id)
     end
 end

@@ -6,7 +6,7 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = policy_scope(Group)
+    @groups = policy_scope(Group).includes(:tasks)
     @inactive = current_user.groups.inactive
   end
 
