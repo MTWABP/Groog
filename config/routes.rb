@@ -8,7 +8,8 @@ Rails.application.routes.draw do
     mount Upmin::Engine => '/upmin'
   end
 
-  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
+  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks", registrations: 'users/registrations' }
+
 
   resources :groups, param: :slug, except: [:destroy] do
     member do
