@@ -108,6 +108,22 @@ class GroupsController < ApplicationController
     redirect_to group_path(@group.slug), notice: "#{user} has been activated."
   end
 
+  # POST /groups/activate/1
+  # POST /groups/activate/1.json
+  def activate_membership
+    invitation = Invite.find(params[:id])
+    group = Group.find(invitation.group.id)
+    authorize group
+    membership = GroupMembership.find_or_create_by(user: current_user, group: group)
+    membership.active = true
+    if membership.save
+      invitation.destroy
+      redirect_to group_path(group.slug), notice: "You are now a member of this group."
+    else
+      redirect_to groups_path, alert: "Something went wrong."
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_group

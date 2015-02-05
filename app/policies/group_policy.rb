@@ -38,6 +38,10 @@ class GroupPolicy
     update?
   end
 
+  def activate_invitation?
+    true
+  end
+
   def scope
     Pundit.policy_scope!(user, group.class)
   end

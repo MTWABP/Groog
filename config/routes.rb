@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
   resources :groups, param: :slug, except: [:destroy] do
+    collection do
+      get 'activate/:id', action: :activate_invitation
+    end
     member do
       get 'join', action: :join
       post 'join', action: :create_membership
