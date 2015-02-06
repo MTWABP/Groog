@@ -17,4 +17,6 @@
 //= require turbolinks
 //= require moment
 //= require bootstrap-datetimepicker
+//= require jquery.validate
+//= require jquery.validate.additional-methods
 //= require_tree .
