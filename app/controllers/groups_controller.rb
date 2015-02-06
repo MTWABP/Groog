@@ -110,7 +110,7 @@ class GroupsController < ApplicationController
 
   # POST /groups/activate/1
   # POST /groups/activate/1.json
-  def activate_membership
+  def activate_invitation
     invitation = Invite.find(params[:id])
     group = Group.find(invitation.group.id)
     authorize group
