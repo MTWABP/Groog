@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 
 
   resources :groups, param: :slug, except: [:destroy] do
+    resources :tasks
+    collection do
+      get 'activate/:id', action: :activate_invitation
+    end
     member do
       get 'join', action: :join
       post 'join', action: :create_membership

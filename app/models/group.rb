@@ -1,4 +1,7 @@
 class Group < ActiveRecord::Base
+  belongs_to :owner, class_name: "User"
+  has_many :invites
+  has_many :tasks
   has_many :group_memberships
   has_many :users, through: :group_memberships do
     def active

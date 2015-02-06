@@ -1,0 +1,47 @@
+<%= simple_form_for @task, url: (@task.persisted? ? group_task_path(@group.slug, @task) : group_tasks_path(@group.slug)), :html => { :class => 'form-horizontal', id: :task_form } do |f| %>
+    <% if @task.errors.any? %>
+        <div id="error_expl" class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <% @task.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+    <% end %>
+
+
+    <div class="control-group">
+      <%= f.label :task, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :task, :class => 'form-control' %>
+      </div>
+      <%= error_span(@task[:task]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :description, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_area :description, :class => 'form-control' %>
+      </div>
+      <%= error_span(@task[:description]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :due_date, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.date_select :due_date %>
+        <script type="text/javascript">
+            $('#task_due_date').datetimepicker()
+        </script>
+      </div>
+      <%= error_span(@task[:due_date]) %>
+    </div>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                group_tasks_path(@group.slug), :class => 'btn btn-default' %>
+
+<% end %>

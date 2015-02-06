@@ -1,7 +1,7 @@
-<div class="container-fluid">
+<div class="container-fluid" id="group">
   <div class="row">
     
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-4" id="group_info">
       <div class="panel panel-default">
         <div class="panel-heading">Group Info</div>
         <div class="panel-body">
@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-4" id="group_members">
       <div class="panel panel-default">
         <div class="panel-heading">Members (<%= @group.users.active.count %>)</div>
         <div class="panel-body">
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-4" id="group_chat">
       <div class="panel panel-default">
         <div class="panel-heading">Chat</div>
         <div class="panel-body">
@@ -33,16 +33,26 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-4" id="group_tasks">
       <div class="panel panel-default">
         <div class="panel-heading">Tasks</div>
         <div class="panel-body">
-
+          <div class="list-group">
+          <% @group.tasks.each do |task| %>
+            <%= link_to group_task_path(@group.slug, task), class: "list-group-item" do %>
+              <img class="avatar" src="<%= task.assignee ? task.assignee.image : image_path('default_avatar.jpg') %>" />
+              <span class="subject"><%= task.task %></span>
+              <span class="due_date"><%= task.due_date.to_formatted_s :short %></span>
+            <% end %>
+          <% end %>
+          <br />
+          <%= link_to "New Task", new_group_task_path(@group.slug), class: "btn btn-block btn-primary"%>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-4" id="group_meetings">
       <div class="panel panel-default">
         <div class="panel-heading">Meetings</div>
         <div class="panel-body">
@@ -51,7 +61,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-4" id="group_pending">
       <div class="panel panel-default">
         <div class="panel-heading">Pending Members (<%= @group.users.inactive.count %>)</div>
         <div class="panel-body">
@@ -64,7 +74,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col-xs-12 col-sm-6 col-md-4" id="group_invites">
       <div class="panel panel-default">
         <div class="panel-heading">Invite</div>
         <div class="panel-body">
