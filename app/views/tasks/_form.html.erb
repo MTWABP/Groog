@@ -1,3 +1,5 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
 <%= simple_form_for @task, url: (@task.persisted? ? group_task_path(@group.slug, @task) : group_tasks_path(@group.slug)), :html => { :class => 'form-horizontal', id: :task_form } do |f| %>
     <% if @task.errors.any? %>
         <div id="error_expl" class="panel panel-danger">
@@ -39,9 +41,12 @@
       </div>
       <%= error_span(@task[:due_date]) %>
     </div>
-
+    <div class="panel-footer">
   <%= f.button :submit, :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 group_tasks_path(@group.slug), :class => 'btn btn-default' %>
+    </div>
 
 <% end %>
+</div>
+</div>
