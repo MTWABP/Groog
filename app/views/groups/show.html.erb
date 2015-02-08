@@ -40,7 +40,7 @@
           <div class="list-group">
           <% @group.tasks.each do |task| %>
             <%= link_to group_task_path(@group.slug, task), class: "list-group-item" do %>
-              <img class="avatar" src="<%= task.assignee ? task.assignee.image : image_path('default_avatar.jpg') %>" />
+              <img class="avatar" src="<%= task.assignee ? task.assignee.avatar : image_path('default_avatar.jpg') %>" />
               <span class="subject"><%= task.task %></span>
               <span class="due_date"><%= task.due_date.to_formatted_s :short %></span>
             <% end %>

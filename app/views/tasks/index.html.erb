@@ -10,6 +10,7 @@
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:task) %></th>
       <th><%= model_class.human_attribute_name(:owner) %></th>
+      <th><%= model_class.human_attribute_name(:assignee) %></th>
       <th><%= model_class.human_attribute_name(:due_date) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -20,6 +21,7 @@
         <td><%= link_to task.id, group_task_path(@group.slug, task) %></td>
         <td><%= task.task %></td>
         <td><%= task.owner %></td>
+        <td><%= task.assignee %></td>
         <td><%= task.due_date.to_formatted_s :long_ordinal %></td>
         <td>
           <%= link_to "Edit",

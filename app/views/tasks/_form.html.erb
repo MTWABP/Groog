@@ -31,6 +31,13 @@
       </div>
       <%= error_span(@task[:description]) %>
     </div>
+        <div class="control-group">
+          <%= f.label :assignee, class: 'control-label' %>
+          <div class="controls">
+            <%= f.collection_select :assignee_id, @group.users.active, :id, :name, {include_blank: true}, class: 'form-control' %>
+          </div>
+          <%= error_span(@task[:assignee_id]) %>
+        </div>
     <div class="control-group">
       <%= f.label :due_date, :class => 'control-label' %>
       <div class="controls">
