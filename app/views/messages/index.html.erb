@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Chat Box</h1>
+<div class="chat_container">
+  <div id="chat_room">
+    <p class="alert"> Welcome to the chat room! </p>
+  </div>
+ 
+  <form id="new_message_form">
+    <input type="text" id="message" name="message">
+    <input type="submit" value="Send">
+  </form>
+</div>
+
+<script>
+	var pusher = new Pusher({
+	  appId: '105855'
+	  key: 'c7d2e61c70b6ce88bb9b'
+	  secret: 'd73fd4c75153e9d9faa2'
+	});
+	pusher.trigger('my-channel', 'my-event', {"message": "hello_world"});
+</script>
+
+<script>
+	var pusher = new Pusher('c7d2e61c70b6ce88bb9b');
+	var channel = pusher.subscribe('my-channel');
+
+	channel.bind('my-event', function(data)) {
+			window.alert(5 + 6);
+		  alert('An event was triggered with message: ' + data.message);
+		});
+		
+</script>
+
+
+
+
