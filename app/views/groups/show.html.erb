@@ -28,7 +28,17 @@
       <div class="panel panel-default">
         <div class="panel-heading">Chat</div>
         <div class="panel-body">
-
+			<div class="chat_container">
+			  <div id="chat_room">
+				<p class="alert"> Welcome to the chat room ! </p>
+			  </div>
+			 
+			  <form id="new_message_form">
+				<input type="text" id="message" name="message">
+				<input type="submit" value="Send">
+			  </form>
+			</div>
+			<%= link_to "Chat", new_group_task_path(@group.slug), class: "btn btn-block btn-primary"%>
         </div>
       </div>
     </div>

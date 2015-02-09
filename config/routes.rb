@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :messages
+
   root to: 'home#index'
 
   post 'ghpull', to: 'home#ghpull'
