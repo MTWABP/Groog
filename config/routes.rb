@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :messages
 
   root to: 'home#index'
 
@@ -15,6 +14,7 @@ Rails.application.routes.draw do
 
   resources :groups, param: :slug, except: [:destroy] do
     resources :tasks
+	resources :messages
     collection do
       get 'activate/:id', action: :activate_invitation
     end
