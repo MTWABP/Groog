@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Chat Box</h1>
 <div class="chat_container">
   <div id="chat_room">
@@ -12,24 +10,22 @@
   </form>
 </div>
 
-<script>
-	var pusher = new Pusher({
-	  appId: '105855'
-	  key: 'c7d2e61c70b6ce88bb9b'
-	  secret: 'd73fd4c75153e9d9faa2'
-	});
-	pusher.trigger('my-channel', 'my-event', {"message": "hello_world"});
-</script>
-
-<script>
+<script>	
 	var pusher = new Pusher('c7d2e61c70b6ce88bb9b');
-	var channel = pusher.subscribe('my-channel');
+	var channel = pusher.subscribe('<%= @group.class.to_s+'-'+@group.slug %>');
 
-	channel.bind('my-event', function(data)) {
-			window.alert(5 + 6);
-		  alert('An event was triggered with message: ' + data.message);
+	channel.bind("new-message", function(data) {
+		console.log(data);
+		$('#chat_room').append(data);
+		  console.log('An event was triggered with message: ' + data);
+	});
+	
+	$( "#new_message_form" ).submit(function( event ) {
+		event.preventDefault();
+		$.post( "/groups/<%= @group.slug %>/messages", {message: {body: $('#message').val()}}, function( data ) {
+		  console.log(data)
 		});
-		
+	});
 </script>
 
 
