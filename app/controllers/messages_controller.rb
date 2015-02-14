@@ -15,11 +15,11 @@ class MessagesController < ApplicationController
   def create
 	@message = @group.messages.build(message_params)
 	@message.channel_type = "Group"
-	@message.channel_id = @group.slug
+	@message.channel_id = @group.id
 	@message.user_id = current_user.id
 	
 	if @message.save
-		Pusher.trigger(@groups.class.to_s+'-'+@group.slug, 'new-message', {author: @message.user.to_s, created_at: @message.created_at, message: @message.body})
+		Pusher.trigger(@group.class.to_s+'-'+@group.slug, 'new-message', @message.as_json(include: :user))
 		render json: @message
 	else 
 		render json: @message.errors
