@@ -252,6 +252,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    shoulda-matchers (2.8.0)
+      activesupport (>= 3.0.0)
     signature (0.1.8)
     simple_form (3.1.0)
       actionpack (~> 4.0)
@@ -337,6 +339,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 5.0)
   selenium-webdriver
+  shoulda-matchers
   simple_form
   spring
   spring-commands-rspec
