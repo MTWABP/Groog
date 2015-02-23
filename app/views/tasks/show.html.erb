@@ -21,8 +21,8 @@
     <% end %>
   </dl>
   <form id="new_comment_form" name="new_comment_form">
-    <input type="text" id="message" name="message" />
-    <input type="submit" value="Create Comment" />
+    <input type="text" id="comment" name="message" />
+    <input type="submit" class="btn btn-primary" value="Create Comment" />
   </form>
 <div class="panel-footer">
 <%= link_to "Back",
@@ -42,12 +42,13 @@
 
     channel.bind("new-comment", function(data) {
         console.log(data);
-        var html = '<dt><strong>'+data.user.name+'</strong></dt><dd>'+data.body+'</dd>'
+        var html = '<dt><strong>'+data.user.name+'</strong></dt><dd>'+data.body+'</dd>';
+        $("#new_comment_form #comment").val("");
         $('#comments').append(html);
     });
 
     $( "#new_comment_form" ).submit(function( event ) {
         event.preventDefault();
-        $.post( "/groups/<%= @group.slug %>/tasks/<%= @task.id %>/comment", {comment: {body: $('#message').val()}}, function( data ) {});
+        $.post( "/groups/<%= @group.slug %>/tasks/<%= @task.id %>/comment", {comment: {body: $('#comment').val()}}, function( data ) {});
     });
 </script>
