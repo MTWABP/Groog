@@ -14,6 +14,16 @@
   <dt><strong><%= model_class.human_attribute_name(:due_date) %>:</strong></dt>
   <dd><%= @task.due_date %></dd>
 </dl>
+  <dl class="dl-horizontal" id='comments'>
+    <% @task.comments.each do |comment| %>
+        <dt><strong><%= comment.user.name %></strong></dt>
+        <dd><%= comment.body %></dd>
+    <% end %>
+  </dl>
+  <form id="new_comment_form" name="new_comment_form">
+    <input type="text" id="message" name="message" />
+    <input type="submit" value="Create Comment" />
+  </form>
 <div class="panel-footer">
 <%= link_to "Back",
               group_tasks_path(@group.slug), :class => 'btn btn-default'  %>
@@ -26,3 +36,18 @@
               :class => 'btn btn-danger' %>
             </div>
 </div>
+
+<script type="text/javascript">
+    var channel = pusher.subscribe('<%= @task.class.to_s+'-'+@task.id.to_s %>');
+
+    channel.bind("new-comment", function(data) {
+        console.log(data);
+        var html = '<dt><strong>'+data.user.name+'</strong></dt><dd>'+data.body+'</dd>'
+        $('#comments').append(html);
+    });
+
+    $( "#new_comment_form" ).submit(function( event ) {
+        event.preventDefault();
+        $.post( "/groups/<%= @group.slug %>/tasks/<%= @task.id %>/comment", {comment: {body: $('#message').val()}}, function( data ) {});
+    });
+</script>
