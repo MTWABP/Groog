@@ -20,6 +20,7 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.0.0'
 gem 'simple_form'
 gem 'upmin-admin'
 gem 'pusher'
+gem 'ci_reporter_rspec'
 group :development do
   gem 'better_errors'
   gem 'quiet_assets'
