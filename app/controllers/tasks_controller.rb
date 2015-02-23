@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_group
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :create_comment]
 
   # GET /tasks
   # GET /tasks.json
@@ -63,6 +63,10 @@ class TasksController < ApplicationController
       format.html { redirect_to group_tasks_path, notice: 'Task was successfully deleted.' }
       format.json { head :no_content }
     end
+  end
+
+  def create_comment
+    @task.comments.build()
   end
 
   private

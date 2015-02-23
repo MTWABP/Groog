@@ -14,7 +14,9 @@ Rails.application.routes.draw do
 
 
   resources :groups, param: :slug, except: [:destroy] do
-    resources :tasks
+    resources :tasks do
+      post 'comment', action: :create_comment
+    end
     collection do
       get 'activate/:id', action: :activate_invitation
     end

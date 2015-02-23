@@ -41,5 +41,6 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_group_task_path(@group.slug),
             :class => 'btn btn-primary' %>
+  <%= link_to "Back", group_path(@group.slug), :class => 'btn btn-default' %>
 </div>
 </div> 
