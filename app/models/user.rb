@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   has_many :group_memberships
+  has_many :messages
+  has_many :private_messages, class_name: Message.to_s, as: :channel
   has_many :groups, through: :group_memberships do
     def active
       where("group_memberships.active = ?", true)

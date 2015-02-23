@@ -1,37 +1,29 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Chat Box</h1>
 <div class="chat_container">
+  <p>Welcome to the chat room!</p>
   <div id="chat_room">
-    <p class="alert"> Welcome to the chat room! </p>
+  <% @messages.each do |message| %>
+    <div class="message">
+      <span class="author"><%= message.user.to_s %> <time><%= message.created_at.strftime("%m/%d %I:%M %p") %></time>:</span> <%= message.body %>
+    </div>
+  <% end %>
   </div>
- 
-  <form id="new_message_form">
-    <input type="text" id="message" name="message">
-    <input type="submit" value="Send">
+  <form id="new_message_form" name="new_message_form">
+    <input type="text" id="message" name="message" />
+    <input type="submit" value="Send" />
   </form>
 </div>
+<script type="text/javascript">
+  var channel = pusher.subscribe('<%= @group.class.to_s+'-'+@group.slug %>');
 
-<script>
-	var pusher = new Pusher({
-	  appId: '105855'
-	  key: 'c7d2e61c70b6ce88bb9b'
-	  secret: 'd73fd4c75153e9d9faa2'
-	});
-	pusher.trigger('my-channel', 'my-event', {"message": "hello_world"});
+  channel.bind("new-message", function(data) {
+    console.log(data);
+    var html = "<div class='message'><span class='author'>"+(data.user.name ? data.user.name : data.user.email)+" <time>"+$.formatDateTime('mm/dd gg:ii a', new Date(data.created_at))+"<\/time>:<\/span> "+data.body+"<\/div>";
+    $('#chat_room').append(html);
+  });
+  
+  $( "#new_message_form" ).submit(function( event ) {
+    event.preventDefault();
+    $.post( "/groups/<%= @group.slug %>/messages", {message: {body: $('#message').val()}}, function( data ) {});
+  });
 </script>
-
-<script>
-	var pusher = new Pusher('c7d2e61c70b6ce88bb9b');
-	var channel = pusher.subscribe('my-channel');
-
-	channel.bind('my-event', function(data)) {
-			window.alert(5 + 6);
-		  alert('An event was triggered with message: ' + data.message);
-		});
-		
-</script>
-
-
-
-

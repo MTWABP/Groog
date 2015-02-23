@@ -1,65 +1,36 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_group
+  before_action :set_message, only: [:destroy]
 
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.all
-  end
-
-  # GET /messages/1
-  # GET /messages/1.json
-  def show
-  end
-
-  # GET /messages/new
-  def new
-    @message = Message.new
-  end
-
-  # GET /messages/1/edit
-  def edit
+    @messages = @group.messages
+	
   end
 
   # POST /messages
   # POST /messages.json
   def create
-	@message = Message.create!(params[:message])
-    @message = Message.new(message_params)
-
-    respond_to do |format|
-      if @message.save
-        format.html { redirect_to @message, notice: 'Message was successfully created.' }
-        format.json { render :show, status: :created, location: @message }
-      else
-        format.html { render :new }
-        format.json { render json: @message.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /messages/1
-  # PATCH/PUT /messages/1.json
-  def update
-    respond_to do |format|
-      if @message.update(message_params)
-        format.html { redirect_to @message, notice: 'Message was successfully updated.' }
-        format.json { render :show, status: :ok, location: @message }
-      else
-        format.html { render :edit }
-        format.json { render json: @message.errors, status: :unprocessable_entity }
-      end
-    end
+	@message = @group.messages.build(message_params)
+	@message.channel_type = "Group"
+	@message.channel_id = @group.id
+	@message.user_id = current_user.id
+	
+	if @message.save
+		Pusher.trigger(@group.class.to_s+'-'+@group.slug, 'new-message', @message.as_json(include: :user))
+		render json: @message
+	else 
+		render json: @message.errors
+	end
   end
 
   # DELETE /messages/1
   # DELETE /messages/1.json
   def destroy
     @message.destroy
-    respond_to do |format|
-      format.html { redirect_to messages_url, notice: 'Message was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+	render json: "{hello: 'world'}"
   end
 
   private
@@ -70,6 +41,10 @@ class MessagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def message_params
-      params[:message]
+      params.require(:message).permit(:body)
+    end
+	
+	def set_group
+      @group = Group.find_by_slug(params[:group_slug])
     end
 end

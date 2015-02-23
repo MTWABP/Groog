@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :messages
 
   root to: 'home#index'
 
@@ -17,6 +16,8 @@ Rails.application.routes.draw do
     resources :tasks do
       post 'comment', action: :create_comment
     end
+	  resources :messages
+
     collection do
       get 'activate/:id', action: :activate_invitation
     end
