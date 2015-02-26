@@ -46,7 +46,7 @@
 			  var channel = pusher.subscribe('<%= @group.class.to_s+'-'+@group.slug %>');
 
 			  channel.bind("new-message", function(data) {
-			  	$('#send_message').disable(false);
+			  	$('#send_message').removeAttr('disabled');
 				console.log(data);
 				var html = "<div class='message'><span class='author'>"+(data.user.name ? data.user.name : data.user.email)+" <time>"+$.formatDateTime('mm/dd gg:ii a', new Date(data.created_at))+"<\/time>:<\/span> "+data.body+"<\/div>";
 
@@ -58,7 +58,7 @@
 			  $( "#new_message_form" ).submit(function( event ) {
 				event.preventDefault();
 				$.post( "/groups/<%= @group.slug %>/messages", {message: {body: $('#message').val()}}, function( data ) {});
-				$('#send_message').disable(true);
+				$('#send_message').attr('disabled', 'disabled');
 			  });
 			</script>
         </div>
