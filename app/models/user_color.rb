@@ -1,4 +1,4 @@
-class UserColor < ActiveRecord::Base
+class UserColor
 	attr_reader :color
 	
 	def initialize(color)

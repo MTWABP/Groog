@@ -1,4 +1,4 @@
-class ColorFactory < ActiveRecord::Base
+class ColorFactory
 	def initialize
 		@user_colors = {}
 	end
