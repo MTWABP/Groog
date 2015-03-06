@@ -33,6 +33,7 @@
 			  <div id="chat_room">
 			  <% @group.messages.each do |message| %>
 				<div class="message">
+				  <img class="avatar" src="<%= message.user ? message.user.avatar : image_path('default_avatar.jpg') %>" />
 				  <span class="author"><%= message.user.to_s %> <time><%= message.created_at.strftime("%m/%d %I:%M %p") %></time>:</span> <%= message.body %>
 				</div>
 			  <% end %>
