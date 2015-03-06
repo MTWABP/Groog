@@ -33,8 +33,9 @@
 			  <div id="chat_room">
 			  <% @group.messages.each do |message| %>
 				<div class="message">
-				  <img class="avatar" src="<%= message.user ? message.user.avatar : image_path('default_avatar.jpg') %>" />
-				  <span class="author"><%= message.user.to_s %> <time><%= message.created_at.strftime("%m/%d %I:%M %p") %></time>:</span> 
+				  <img class="avatar" src="<%= message.user.avatar ? message.user.avatar : image_path('default_avatar.jpg') %>" />
+				  <time class="time-body"><%= message.created_at.strftime("%m/%d %I:%M %p") %> </time>
+				  <span class="author"><%= message.user.to_s %>:</span> 
 				  <span class="message-body"><%= message.body %></span>
 				</div>
 			  <% end %>
@@ -50,7 +51,12 @@
 			  channel.bind("new-message", function(data) {
 			  	$('#send_message').removeAttr('disabled');
 				console.log(data);
-				var html = "<div class='message'><span class='author'>"+(data.user.name ? data.user.name : data.user.email)+" <time>"+$.formatDateTime('mm/dd gg:ii a', new Date(data.created_at))+"<\/time>:<\/span> "+data.body+"<\/div>";
+				var html = "<div class='message'>"+
+								"<img class='avatar' src='"+(data.user.avatar ? data.user.avatar : "<%= image_path('default_avatar.jpg') %>")+"' />"+
+								" <time class='time-body'>"+$.formatDateTime('mm/dd gg:ii a', new Date(data.created_at))+"</time> "+
+								"<span class='author'>"+(data.user.name ? data.user.name : data.user.email)+": </span> "+
+								data.body+
+							"</div>";
 
 				$('#chat_room').append(html);
 				$('#chat_room').scrollTop(9999999999);
@@ -61,6 +67,10 @@
 				event.preventDefault();
 				$.post( "/groups/<%= @group.slug %>/messages", {message: {body: $('#message').val()}}, function( data ) {});
 				$('#send_message').attr('disabled', 'disabled');
+			  });
+			  
+			  $(document).ready(function() {
+				$('#chat_room').scrollTop(9999999999);
 			  });
 			</script>
         </div>
@@ -74,7 +84,7 @@
           <div class="list-group">
           <% @group.tasks.each do |task| %>
             <%= link_to group_task_path(@group.slug, task), class: "list-group-item" do %>
-              <img class="avatar" src="<%= task.assignee ? task.assignee.avatar : image_path('default_avatar.jpg') %>" />
+              <img class="avatar" src="<%= task.assignee.avatar ? task.assignee.avatar : image_path('default_avatar.jpg') %>" />
               <span class="subject"><%= task.task %></span>
               <span class="due_date"><%= task.due_date.to_formatted_s :short %></span>
             <% end %>
@@ -82,15 +92,6 @@
           <br />
           <%= link_to "New Task", new_group_task_path(@group.slug), class: "btn btn-block btn-primary"%>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-4" id="group_meetings">
-      <div class="panel panel-default">
-        <div class="panel-heading">Meetings</div>
-        <div class="panel-body">
-
         </div>
       </div>
     </div>

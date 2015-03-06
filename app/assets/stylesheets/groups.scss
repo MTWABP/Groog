@@ -18,13 +18,20 @@
 	max-height: 200px;
 	overflow-y: scroll;
 	.message {
+		line-height: 25px;
 		.avatar {
 			width: 28px;
 			float: left;
 			padding-right: 8px;
 		}
-		.author {
+		.time-body {
 			font-weight: bold;
+			font-size: 75%;
+			color: #0000FF;
+		}
+		.author {
+			color: #0000FF;
+			font-weight: bold;	
 		}
 		.message-body {
 			
