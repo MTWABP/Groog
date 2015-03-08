@@ -21,7 +21,6 @@ gem 'simple_form'
 gem 'upmin-admin'
 gem 'pusher'
 gem 'ci_reporter_rspec'
-gem 'font-awesome-sass'
 group :development do
   gem 'better_errors'
   gem 'quiet_assets'
