@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_group
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :create_comment]
 
   # GET /tasks
   # GET /tasks.json
@@ -65,6 +65,18 @@ class TasksController < ApplicationController
     end
   end
 
+  def create_comment
+    @comment = @task.comments.build(comment_params)
+    @comment.user_id = current_user.id
+
+    if @comment.save
+      Pusher.trigger(@task.class.to_s+'-'+@task.id.to_s, 'new-comment', @comment.as_json(include: :user))
+      render json: @comment.as_json(include: :user)
+    else
+      render json: @comment.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
@@ -78,5 +90,9 @@ class TasksController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
       params.require(:task).permit(:task, :description, :due_date, :assignee_id)
+    end
+
+    def comment_params
+      params.require(:comment).permit(:body)
     end
 end

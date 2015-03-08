@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   root to: 'home#index'
 
   post 'ghpull', to: 'home#ghpull'
@@ -12,7 +13,13 @@ Rails.application.routes.draw do
 
 
   resources :groups, param: :slug, except: [:destroy] do
-    resources :tasks
+    resources :tasks do
+      member do
+        post 'comment', action: :create_comment
+      end
+    end
+	  resources :messages
+
     collection do
       get 'activate/:id', action: :activate_invitation
     end

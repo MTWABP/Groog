@@ -1,16 +1,31 @@
 <% if user_signed_in? %>
   <li>
-  	<%= link_to new_group_path do %>
-	   <span class= "glyphicon glyphicon-plus-sign" ></span> New Group
-	 <% end %>
+    	<%= link_to new_group_path do %>
+    	   <span class= "glyphicon glyphicon-plus-sign" ></span> 
+    	   New Group
+  	  <% end %>
   </li>
-  <li><%= link_to 'My Groups', groups_path %></li>
-  <li><%= link_to edit_user_registration_path do %>
-  	<span class= "glyphicon glyphicon-cog" ></span> 
-  	Edit Account
+
+  <li>
+      <%= link_to groups_path do %>
+        <i class="fa fa-users"></i>
+        My Groups
+      <% end %>
+  </li>
+
+  <li>
+    <%= link_to edit_user_registration_path do %>
+    	   <span class= "glyphicon glyphicon-cog" ></span> 
+  	     Edit Account
   	<% end %>
   </li>
-  <li><%= link_to 'Sign out', destroy_user_session_path, :method=>'delete' %></li>
+  <li>
+    <%= link_to destroy_user_session_path, :method=>'delete' do %>
+        <i class="fa fa-sign-out"></i>
+        Sign Out
+  <% end %>
+
+  </li>
 <% else %>
   <li><%= link_to 'Sign in', new_user_session_path %></li>
   <li><%= link_to 'Sign up', new_user_registration_path %></li>

@@ -8,7 +8,7 @@ $navbar-height: 45px;
 $navbar-link-color: white;
 $brand-primary: #f39c12;
 $jumbotron-bg: #bdc3c7;
-
+$brand-warning: #f0ad4e;
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
@@ -79,6 +79,9 @@ section {
   @extend .btn;
   @extend .btn-primary;
   @extend .btn-xs;
+}
+.masthead {
+  background-color: 20px;
 }
 
 

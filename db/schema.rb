@@ -11,11 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204000329) do
+ActiveRecord::Schema.define(version: 20150209041048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "chats", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "group_memberships", force: :cascade do |t|
     t.integer  "user_id",                    null: false
@@ -44,6 +49,19 @@ ActiveRecord::Schema.define(version: 20150204000329) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+
+  create_table "messages", force: :cascade do |t|
+    t.string   "body",         null: false
+    t.integer  "user_id",      null: false
+    t.string   "channel_id",   null: false
+    t.string   "channel_type", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "messages", ["channel_id"], name: "index_messages_on_channel_id", using: :btree
+  add_index "messages", ["channel_type"], name: "index_messages_on_channel_type", using: :btree
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.string   "task"
@@ -82,5 +100,6 @@ ActiveRecord::Schema.define(version: 20150204000329) do
 
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
+  add_foreign_key "messages", "users"
   add_foreign_key "tasks", "groups"
 end

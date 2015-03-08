@@ -1,0 +1,29 @@
+<h1>Chat Box</h1>
+<div class="chat_container">
+  <p>Welcome to the chat room!</p>
+  <div id="chat_room">
+  <% @messages.each do |message| %>
+    <div class="message">
+      <span class="author"><%= message.user.to_s %> <time><%= message.created_at.strftime("%m/%d %I:%M %p") %></time>:</span> <%= message.body %>
+    </div>
+  <% end %>
+  </div>
+  <form id="new_message_form" name="new_message_form">
+    <input type="text" id="message" name="message" />
+    <input type="submit" value="Send" />
+  </form>
+</div>
+<script type="text/javascript">
+  var channel = pusher.subscribe('<%= @group.class.to_s+'-'+@group.slug %>');
+
+  channel.bind("new-message", function(data) {
+    console.log(data);
+    var html = "<div class='message'><span class='author'>"+(data.user.name ? data.user.name : data.user.email)+" <time>"+$.formatDateTime('mm/dd gg:ii a', new Date(data.created_at))+"<\/time>:<\/span> "+data.body+"<\/div>";
+    $('#chat_room').append(html);
+  });
+  
+  $( "#new_message_form" ).submit(function( event ) {
+    event.preventDefault();
+    $.post( "/groups/<%= @group.slug %>/messages", {message: {body: $('#message').val()}}, function( data ) {});
+  });
+</script>

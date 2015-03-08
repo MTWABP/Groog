@@ -19,6 +19,9 @@ gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.0.0'
 gem 'simple_form'
 gem 'upmin-admin'
+gem 'pusher'
+gem 'ci_reporter_rspec'
+gem 'font-awesome-sass'
 group :development do
   gem 'better_errors'
   gem 'quiet_assets'
@@ -34,6 +37,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
 end
 group :test do
   gem 'capybara'
