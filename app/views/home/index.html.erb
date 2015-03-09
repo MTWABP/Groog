@@ -1,7 +1,10 @@
 <div class = "col-xs-3"></div>
 	<div class = "col-xs-6">
 		<div class="jumbotron center ">
+			<div class="panel-heading-">
 			<h1>Lets Groog Up!</h1>
+		</div>
+		<div class="panel-body">
 			<% if user_signed_in? %>
 			  <%= link_to "Create a new group!", new_group_path, class: "btn btn-primary btn-lg" %>
 			<% else %>
@@ -9,20 +12,30 @@
 			  <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-lg" %>
 			<% end%> 
 		</div>
+			</div>
+		</div>
 	</div>
 </div>
 <br>
+
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
+			<div class="panel panel-primary">
 	<div class="jumbotron center ">
 		<div class="row clearfix">
 			<div class="col-md-6 column">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
 				<h3>Create a Group</h3>
+				</div>
+			<div class="panel-body">
 				<p>
 					Creating a group could not be easier. Simply create a name and description, and 
 					a URL will be generated that links to your group so you can invite others to join.
 				</p>
+			</div>
+		</div>
 			</div>
 			<div class="col-md-6 column">
 				<%= image_tag "new_group.png" %>
@@ -33,20 +46,30 @@
 				<%= image_tag "group_active.png" %>
 			</div>
 			<div class="col-md-6 column">
+			</br>
+				<div class="panel panel-primary">
+					<div class="panel-heading">
 				<h3>Active Groups</h3>
+			</div>
 				<p class="text-left">
 					Are you overwhelmed juggling multiple groups? Well with Groog
 					you can manage and switch between groups as simple as two clicks.
 				</p>
 			</div>
+			</div>
 		</div>
+		</br>
 		<div class="row clearfix">
 			<div class="col-md-6 column">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
 				<h3>Chat</h3>
+			</div>
 				<p>
 					You cant have a group without communicating with them, so this top of the line next gen chat system will help you do just that.
 				</p>
 			</div>
+		</div>
 			<div class="col-md-6 column">
 				<%= image_tag "chat.png" %>
 			</div>
@@ -55,14 +78,20 @@
 			<div class="col-md-6 column">
 				<%= image_tag "tasks.png" %>
 			</div>
+			</br>
 			<div class="col-md-6 column">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
 				<h3>Assign Tasks</h3>
+			</div>
 				<p class="text-left">
 					Feeling like your team-mates are lost and need a sense of direction? Well how about assigning them a task to help them move forward. Want to know the best part? You can even assign a due date. BAM!
 				</p>
 			</div>
+			</div>
 		</div>
 	</div>
+</div>
 </div>
 </div>
 </div>
