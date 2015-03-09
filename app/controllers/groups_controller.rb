@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :create_membership, :activate_membership]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :create_membership, :activate_membership, :invite]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_active
 
   # GET /groups
@@ -76,7 +76,7 @@ class GroupsController < ApplicationController
     authorize @group
     membership = GroupMembership.find_by(user: current_user, group: @group)
     if membership.nil?
-      
+      #render page normally
     elsif membership.active
       redirect_to group_path(@group.slug), notice: "You are already part of this team!"
     else
@@ -112,6 +112,10 @@ class GroupsController < ApplicationController
   # POST /groups/activate/1.json
   def activate_invitation
     invitation = Invite.find(params[:id])
+    if invitation.nil?
+      redirect_to grouops_path, alert: "This invite is invalid. Sorry."
+      return
+    end
     group = Group.find(invitation.group.id)
     authorize group
     membership = GroupMembership.find_or_create_by(user: current_user, group: group)
@@ -122,6 +126,17 @@ class GroupsController < ApplicationController
     else
       redirect_to groups_path, alert: "Something went wrong."
     end
+  end
+  
+  # POST /groups/1/invite
+  def invite
+    invitees = params[:invites].split('\n')
+    invitees.each do |email|
+      invite = @group.invites.build
+      invite.save
+      InviteMailer.invite_email(email, invite, @group, current_user).deliver_now
+    end
+    redirect_to group_path(@group.slug), notice: "Invites were successfully sent."
   end
 
   private

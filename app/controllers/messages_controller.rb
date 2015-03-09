@@ -19,7 +19,7 @@ class MessagesController < ApplicationController
 	@message.user_id = current_user.id
 	
 	if @message.save
-		Pusher.trigger(@group.class.to_s+'-'+@group.slug, 'new-message', @message.as_json(include: :user))
+		Pusher.trigger('private-'+@group.class.to_s+'-'+@group.slug, 'new-message', @message.as_json(include: :user))
 		render json: @message
 	else 
 		render json: @message.errors

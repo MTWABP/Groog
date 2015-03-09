@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
+  before_action :authenticate_user!, only: [:pusher_auth]
   protect_from_forgery except: [:ghpull]
-  skip_before_action :verify_authenticity_token, only: [:ghpull]
+  skip_before_action :verify_authenticity_token, only: [:ghpull, :pusher_auth]
   def index
   end
 
@@ -21,5 +22,25 @@ class HomeController < ApplicationController
 
   def profile
     redirect_to :back
+  end
+  
+  def pusher_auth
+    channel = params[:channel_name].sub('private-', '')
+    if channel.start_with?("User")
+      id = channel.sub('User-', '')
+      if (current_user.id.to_s == id)
+        response = Pusher[params[:channel_name]].authenticate(params[:socket_id])
+        render json: response
+        return
+      end
+    elsif channel.start_with?("Group")
+      slug = channel.sub('Group-', '')
+      if (current_user.groups.active.find_by(slug: slug))
+        response = Pusher[params[:channel_name]].authenticate(params[:socket_id])
+        render json: response
+        return
+      end
+    end
+    render text: 'Forbidden', status: 403
   end
 end

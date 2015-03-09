@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+  <h3>You have recieved an invite to to join the group "<%= @group.name %>" on <a href="http://groog.me">Groog.me</a> by <%= @sender.to_s %>.</h3>
+  <p>Please use this link to activate your membership to this group <a href="http://groog.me/groups/activate/<%= @invite.id %>">http://groog.me/groups/activate/<%= @invite.id %></a></p>
+</body>
+</html>

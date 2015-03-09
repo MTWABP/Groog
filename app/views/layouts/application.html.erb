@@ -3,13 +3,27 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "Groog" %></title>
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Groog" %>">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : 'Groog' %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
     <script src="//js.pusher.com/2.2/pusher.min.js"></script>
     <script>
       var pusher = new Pusher('c7d2e61c70b6ce88bb9b');
+      <% if user_signed_in? %>
+      var user_channel = pusher.subscribe('private-User-<%= current_user.id %>');
+      user_channel.bind('accepted', function(data) {
+        console.log(data);
+        if (window.location.pathname === '/groups/') {
+          window.location.reload();
+        } else {
+          var val = window.confirm('You have been accepted into the group "'+data.name+'" hit OK to navigate to the group\'s homepage.');
+          if (val == true) {
+            window.location.replace(window.location.origin+'/groups/'+data.slug);
+          }
+        }
+      });
+      <% end %>
     </script>
   </head>
   <body>

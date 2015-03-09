@@ -17,7 +17,10 @@
         <div class="panel-body">
           <div class="list-group">
           <% @group.users.active.each do |user|%>
-            <%= link_to user, user_path(user), class: "list-group-item" %>
+            <%= link_to user_path(user), class: "list-group-item" do %>
+            <img class="avatar" src="<%= user.avatar ? user.avatar : image_path('default_avatar2.jpg') %>" />
+            <span class="user"><%= user.to_s %></span>
+            <% end %>
           <% end %>
           </div>
         </div>
@@ -28,51 +31,26 @@
       <div class="panel panel-default">
         <div class="panel-heading">Chat</div>
         <div class="panel-body">
-			<div class="chat_container">
-			  <p>Welcome to the chat room!</p>
-			  <div id="chat_room">
-			  <% @group.messages.each do |message| %>
-				<div class="message">
-				  <img class="avatar" src="<%= message.user.avatar ? message.user.avatar : image_path('default_avatar2.jpg') %>" />
-				  <time class="time-body"><%= message.created_at.strftime("%m/%d %I:%M %p") %> </time>
-				  <span class="author"><%= message.user.to_s %>:</span> 
-				  <span class="message-body"><%= message.body %></span>
-				</div>
-			  <% end %>
-			  </div>
-			  <form id="new_message_form" name="new_message_form">
-				<input type="text" id="message" name="message" />
-				<input type="submit" value="Send" id="send_message" />
-			  </form>
-			</div>
-			<script type="text/javascript">
-			  var channel = pusher.subscribe('<%= @group.class.to_s+'-'+@group.slug %>');
-
-			  channel.bind("new-message", function(data) {
-			  	$('#send_message').removeAttr('disabled');
-				console.log(data);
-				var html = "<div class='message'>"+
-								"<img class='avatar' src='"+(data.user.avatar ? data.user.avatar : "<%= image_path('default_avatar2.jpg') %>")+"' />"+
-								" <time class='time-body'>"+$.formatDateTime('mm/dd gg:ii a', new Date(data.created_at))+"</time> "+
-								"<span class='author'>"+(data.user.name ? data.user.name : data.user.email)+": </span> "+
-								data.body+
-							"</div>";
-
-				$('#chat_room').append(html);
-				$('#chat_room').scrollTop(9999999999);
-				$('#message').val("");
-			  });
-			  
-			  $( "#new_message_form" ).submit(function( event ) {
-				event.preventDefault();
-				$.post( "/groups/<%= @group.slug %>/messages", {message: {body: $('#message').val()}}, function( data ) {});
-				$('#send_message').attr('disabled', 'disabled');
-			  });
-			  
-			  $(document).ready(function() {
-				$('#chat_room').scrollTop(9999999999);
-			  });
-			</script>
+          <div class="chat_container">
+            <div id="chat_room">
+            <% @group.messages.each do |message| %>
+              <div class="message">
+                <img class="avatar" src="<%= message.user.avatar ? message.user.avatar : image_path('default_avatar2.jpg') %>" />
+                <time class="time-body"><%= message.created_at %> </time>
+                <span class="author"><%= message.user.to_s %>:</span> 
+                <span class="message-body"><%= message.body %></span>
+              </div>
+            <% end %>
+            </div>
+            <form id="new_message_form" name="new_message_form">
+              <div class="input-group">
+                <input type="text" class="form-control" id="message" name="message" />
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="submit" value="Send" id="send_message"><i class="glyphicon glyphicon-send"></i></button>
+                </span>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -102,7 +80,10 @@
         <div class="panel-body">
           <div class="list-group">
           <% @group.users.inactive.each do |user|%>
-            <%= link_to user, activate_user_group_path(@group.slug, user), class: "list-group-item", method: :post %>
+            <%= link_to activate_user_group_path(@group.slug, user), class: "list-group-item", id: user.id, method: :post do %>
+            <img class="avatar" src="<%= user.avatar ? user.avatar : image_path('default_avatar2.jpg') %>" />
+            <span class="user"><%= user.to_s %></span>
+            <% end %>
           <% end %>
           </div>
         </div>
@@ -113,10 +94,55 @@
       <div class="panel panel-default">
         <div class="panel-heading">Invite</div>
         <div class="panel-body">
-
+          Enter the email addresses of members you would like to invite to Groog, separated by a new line.
+          <form action="/groups/<%= @group.slug %>/invite" method="POST">
+            <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+            <textarea name="invites" class="form-control"></textarea>
+            <input type="submit" value="Invite" class="btn btn-block btn-primary" />
+          </form>
         </div>
       </div>
     </div>
 
   </div>
 </div>
+
+
+<script type="text/javascript">
+if (!pusher.channels.find('private-<%= @group.class.to_s+'-'+@group.slug %>')) {
+  var group_channel = pusher.subscribe('private-<%= @group.class.to_s+'-'+@group.slug %>');
+
+  group_channel.bind("new-message", function(data) {
+    $('#send_message').removeAttr('disabled');
+    console.log(data);
+    var html = "<div class='message'>"+
+            "<img class='avatar' src='"+(data.user.avatar ? data.user.avatar : "<%= image_path('default_avatar2.jpg') %>")+"' />"+
+            " <time class='time-body'>"+$.formatDateTime('mm/dd gg:ii a', new Date(data.created_at))+"</time> "+
+            "<span class='author'>"+(data.user.name ? data.user.name : data.user.email)+": </span> "+
+            data.body+
+          "</div>";
+
+    $('#chat_room').append(html);
+    $('#chat_room').scrollTop(9999999999);
+    $('#message').val("");
+  });
+
+  group_channel.bind("new-member", function(data) {
+    console.log(data);
+  });
+}
+
+$("#new_message_form").submit(function(event) {
+  event.preventDefault();
+  $.post( "/groups/<%= @group.slug %>/messages", {message: {body: $('#message').val()}}, function(data) {});
+  $('#send_message').attr('disabled', 'disabled');
+});
+
+$(document).ready(function() {
+  $('#group_chat .time-body').each(function(k, v) {
+    var e = $(v);
+    e.html($.formatDateTime('mm/dd gg:ii a', new Date(e.html())));
+  });
+  $('#chat_room').scrollTop(9999999999);
+});
+</script>

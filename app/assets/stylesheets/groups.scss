@@ -1,11 +1,6 @@
 #group {
   #group_tasks {
     .list-group-item {
-      .avatar {
-        width: 28px;
-        float: left;
-        padding-right: 8px;
-      }
       .subject {
         font-weight: bold;
       }
@@ -15,27 +10,26 @@
     }
   }
   #chat_room {
-	max-height: 200px;
-	overflow-y: scroll;
-	.message {
-		line-height: 25px;
-		.avatar {
-			width: 28px;
-			float: left;
-			padding-right: 8px;
-		}
-		.time-body {
-			font-weight: bold;
-			font-size: 75%;
-			color: #0000FF;
-		}
-		.author {
-			color: #0000FF;
-			font-weight: bold;	
-		}
-		.message-body {
-			
-		}
-	}
+  	max-height: 200px;
+  	overflow-y: scroll;
+  	.message {
+  		line-height: 25px;
+  		.time-body {
+  			font-weight: bold;
+  			font-size: 75%;
+  			color: #0000FF;
+  		}
+  		.author {
+  			color: #0000FF;
+  			font-weight: bold;	
+  		}
+    }
   }
+}
+#group {
+	.avatar {
+		width: 28px;
+		float: left;
+		padding-right: 8px;
+	}
 }
