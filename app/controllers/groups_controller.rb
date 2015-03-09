@@ -130,7 +130,7 @@ class GroupsController < ApplicationController
   
   # POST /groups/1/invite
   def invite
-    invitees = params[:invites].split('\n')
+    invitees = params[:invites].split(/\r?\n/)
     invitees.each do |email|
       invite = @group.invites.build
       invite.save
